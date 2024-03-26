@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "local": "concurrently \"npm run server\" \"npm run web\"",
+    "local": "concurrently \"npm run server\" \"npm run client\"",
     "server": "npm run local --prefix server",
-    "web": "npm run local --prefix web"
+    "client": "npm run local --prefix client"
   },
   "devDependencies": {
     "concurrently": "7.6.0"
