@@ -5,12 +5,14 @@ export const Error = () => {
   console.error(error);
 
   if (!isRouteErrorResponse(error)) {
-    return <div>Something wrong happen.</div>;
+    return <div>Something wrong happened...</div>;
   }
 
   return (
-    <div className="text-center text-red-700">
-      <h1>Oops!</h1>
+    <div className="text-center">
+      <h1 className="text-red-700 font-semibold tracking-tight text-4xl">
+        Oops!
+      </h1>
       <p>Sorry, an unexpected error has occurred.</p>
       <p>
         <i>{error.statusText || error.data}</i>
