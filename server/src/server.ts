@@ -1,5 +1,6 @@
 import express, { Express, Response, Request } from "express";
 import { createHealthRouter } from "./routes/health";
+import { createNewsletterRouter } from "./routes/newsletter";
 
 const errorHandler = (error: Error, req: Request, res: Response) => {
   console.log(error);
@@ -22,12 +23,15 @@ export const createServer = (): Express => {
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
 
-  server.use("/v1", createHealthRouter());
+  //routes
+  server.use("/api/v1", createHealthRouter());
+  server.use("/api/v1", createNewsletterRouter());
 
   server.use((req, res, next) => {
     next(new Error("Not found"));
   });
 
+  //error handler
   server.use(errorHandler);
 
   return server;
