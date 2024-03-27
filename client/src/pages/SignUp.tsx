@@ -42,7 +42,7 @@ export const SignUp = () => {
 
         return setErrorMessage('Invalid email, please try again.');
       }
-      return navigate('/confirm-email-sent', { state: { email } });
+      return navigate('/confirm-email', { state: { email } });
     } catch (error) {
       console.error(error);
       setEmail('');
