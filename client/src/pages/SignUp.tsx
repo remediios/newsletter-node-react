@@ -1,9 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEventHandler, useEffect, useState } from 'react';
+import { API_URL } from '../utils/constants';
+import { useNavigate } from 'react-router-dom';
+
+interface SignupSuccessPayload {
+  message: string;
+}
 
 export const SignUp = () => {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleEmailChange: ChangeEventHandler<HTMLInputElement> = ({
     target,
@@ -11,10 +18,35 @@ export const SignUp = () => {
     setEmail(target.value);
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!email) return setErrorMessage('Email is required');
     setErrorMessage('');
-    console.log(email);
+    const body = JSON.stringify({ email });
+
+    try {
+      const response = await fetch(`${API_URL}/newsletter/signup`, {
+        method: 'POST',
+        body,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const payload = (await response.json()) as SignupSuccessPayload;
+
+      const isOkRequest = response.status === 200 || response.status === 201;
+      if (!isOkRequest) {
+        if (typeof payload === 'string') {
+          return setErrorMessage(payload);
+        }
+
+        return setErrorMessage('Invalid email, please try again.');
+      }
+      return navigate('/confirm-email-sent', { state: { email } });
+    } catch (error) {
+      console.error(error);
+      setEmail('');
+    }
   };
 
   useEffect(() => {
@@ -48,6 +80,7 @@ export const SignUp = () => {
             className="border border-blue-600 w-2/5 p-2 rounded"
           />
           <button
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={handleSignUp}
             className="bg-blue-800 text-white rounded-lg p-2 m-3 w-1/5 hover:bg-blue-600 transition"
           >
