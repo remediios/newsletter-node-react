@@ -4,6 +4,7 @@ const errors = {
   "ERR-001": "{#key} is required",
   "ERR-002": "{#key} is not valid",
   "ERR-003": "Invalid PubSub payload",
+  "ERR-004": "{#key} not found",
 };
 
 export const getErrorDescription = (code: Code, key?: string) => {
