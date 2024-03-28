@@ -4,6 +4,7 @@ import {
   signUpHandler,
   getAllSubscribersHandler,
   getSubscriberHandler,
+  deleteSubscriberHandler,
 } from "../../controllers/newsletter-controller";
 
 export const createNewsletterRouter = (prisma: PrismaClient) => {
@@ -17,6 +18,10 @@ export const createNewsletterRouter = (prisma: PrismaClient) => {
   newsletterRouter.get(
     "/newsletter/subscriber/:id",
     getSubscriberHandler(prisma)
+  );
+  newsletterRouter.delete(
+    "/newsletter/subscriber/:id",
+    deleteSubscriberHandler(prisma)
   );
 
   return newsletterRouter;

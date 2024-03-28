@@ -79,11 +79,43 @@ export const getSubscriberHandler =
 
       return response
         .status(200)
-        .json({ subscriber, message: "Subscriber deleted succesfully" });
+        .json({ subscriber, message: "Subscriber found succesfully" });
     } catch (error: unknown) {
       if (!(error instanceof ErrorCode)) {
         console.log("getSubscriberHandler: ", error);
-        throw new Error(String(error));
+        return response.status(400).json({ message: "Subscriber not found" });
+      }
+
+      if (["ERR-001", "ERR-002", "ERR-003", "ERR-004"].includes(error.code)) {
+        return response.status(400).json(error.message);
+      }
+
+      return response.status(500).json(error.message);
+    }
+  };
+
+export const deleteSubscriberHandler =
+  (prisma: PrismaClient) => async (request: Request, response: Response) => {
+    try {
+      const { id } = request.params;
+
+      const subscriber = await prisma.newsletterSubscriber.delete({
+        where: { id },
+      });
+
+      if (!subscriber) {
+        return new ErrorCode("ERR-004", "Subscriber");
+      }
+
+      return response
+        .status(200)
+        .json({ subscriber, message: "Subscriber deleted succesfully" });
+    } catch (error: unknown) {
+      if (!(error instanceof ErrorCode)) {
+        console.log("deleteSubscriberHandler: ", error);
+        return response
+          .status(400)
+          .json({ message: "Error deleting subscriber or not found" });
       }
 
       if (["ERR-001", "ERR-002", "ERR-003", "ERR-004"].includes(error.code)) {
