@@ -38,4 +38,30 @@ describe("signup", () => {
       .expect("Content-Type", /json/)
       .expect(201);
   });
+
+  it("should not fail if the email is already signed up, it should upsert", async () => {
+    const email = "integration-test@gmail.com";
+    await request(server)
+      .post("/api/v1/newsletter/signup")
+      .send({ email })
+      .expect("Content-Type", /json/)
+      .expect(201);
+
+    const firstRecord = await prisma.newsletterSubscriber.findFirst({
+      where: { email },
+    });
+
+    await request(server)
+      .post("/api/v1/newsletter/signup")
+      .send({ email })
+      .expect("Content-Type", /json/)
+      .expect(201);
+
+    const secondRecord = await prisma.newsletterSubscriber.findFirst({
+      where: { email },
+    });
+
+    const hasNewToken = firstRecord?.token !== secondRecord?.token;
+    expect(hasNewToken).toBeTruthy();
+  });
 });
