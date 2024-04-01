@@ -1,5 +1,4 @@
 import request from "supertest";
-import HttpStatus from "http-status";
 import { createServer } from "../../src/server";
 import { PrismaClient } from "@prisma/client";
 
@@ -13,9 +12,9 @@ describe("health", () => {
 
   it("should return 200 if the server is up", async () => {
     await request(server)
-      .get("/v1/health")
+      .get("/api/v1/health")
       .send()
-      .expect("ok")
-      .expect(HttpStatus.OK);
+      .expect("200 Status")
+      .expect(200);
   });
 });
