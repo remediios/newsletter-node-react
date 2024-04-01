@@ -27,7 +27,7 @@ export const signUpHandler =
       console.log("signUpHandler: Sign Up Successful");
 
       return response
-        .status(200)
+        .status(201)
         .json({ subscriber, message: "Subscriber created successfully" });
     } catch (error: unknown) {
       if (!(error instanceof ErrorCode)) {

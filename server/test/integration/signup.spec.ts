@@ -22,11 +22,20 @@ describe("signup", () => {
     await request(server).post("/api/v1/newsletter/signup").send().expect(400);
   });
 
-  it("should return 200 if a valid email is sent", async () => {
+  it("should return 400 if the email is not valid", async () => {
+    const email = "integration-test@.com";
+    await request(server)
+      .post("/api/v1/newsletter/signup")
+      .send({ email })
+      .expect("Content-Type", /json/)
+      .expect(400);
+  });
+
+  it("should return 201 if a valid email is sent", async () => {
     await request(server)
       .post("/api/v1/newsletter/signup")
       .send({ email: "john@wick.com" })
       .expect("Content-Type", /json/)
-      .expect(200);
+      .expect(201);
   });
 });
