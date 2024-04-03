@@ -3,13 +3,15 @@ import { Request, Response } from "express";
 import { isEmailValid } from "../utils/email";
 import { ErrorCode } from "../errors/api-error";
 import { upsertSubscriber } from "../services/actions";
+import { PubSubService } from "../services/pubsub/types";
 
 interface SignUpPayload {
   email?: string;
 }
 
 export const signUpHandler =
-  (prisma: PrismaClient) => async (request: Request, response: Response) => {
+  (prisma: PrismaClient, pubSub: PubSubService) =>
+  async (request: Request, response: Response) => {
     try {
       const { email = "" } = request.body as SignUpPayload;
 
@@ -24,6 +26,7 @@ export const signUpHandler =
       //Create subscriber
       const subscriber = await upsertSubscriber(prisma, email);
       // Publish notification pub/sub topic
+      await pubSub.publish("newsletter-signup", { data: "Hello world" });
       console.log("signUpHandler: Sign Up Successful");
 
       return response

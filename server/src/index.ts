@@ -1,11 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import { createServer } from "./server";
+import { TestPubSub } from "./services/pubsub/test-pubsub";
 
 const PORT = process.env.PORT || 8080;
 
 const prisma = new PrismaClient();
+const pubSub = new TestPubSub();
 
-const server = createServer({ prisma }).listen(PORT, () => {
+const server = createServer({ prisma, pubSub }).listen(PORT, () => {
   console.log(`🚀 Server ready at: http://localhost:${PORT}`);
 });
 
