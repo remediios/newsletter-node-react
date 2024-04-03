@@ -15,6 +15,7 @@
     "test:integration": "DOTENV_CONFIG_PATH=./.env.test jest -i --detectOpenHandles --forceExit test/integration"
   },
   "dependencies": {
+    "@google-cloud/pubsub": "^4.3.3",
     "@prisma/client": "^5.11.0",
     "cors": "^2.8.5",
     "dotenv": "16.3.1",

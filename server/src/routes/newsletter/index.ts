@@ -5,7 +5,7 @@ import {
   getAllSubscribersHandler,
   getSubscriberHandler,
   deleteSubscriberHandler,
-} from "../../controllers/newsletter-controller";
+} from "../../controllers/newsletter-signup-controller";
 import { PubSubService } from "../../services/pubsub/types";
 
 export const createNewsletterRouter = (
